@@ -81,6 +81,7 @@ namespace Labb3VG
                             Console.WriteLine("You bought a Fire Sword. You can hear its sound \"FCCSHHHH\" while you swing it through the air.");
                             player.FireWeapon = true;
                             player.Gold -= 100;
+                            player.WeaponList.Add("Fire Sword");
 
                         }
                         else
@@ -95,6 +96,7 @@ namespace Labb3VG
                             Console.WriteLine("You bought an Electric Rod. The flashes surronds it and fire lightnings");
                             player.GrassWeapon = true;
                             player.Gold -= 100;
+                            player.WeaponList.Add("Electric Rod");
 
                         }
                         else
@@ -109,6 +111,7 @@ namespace Labb3VG
                             Console.WriteLine("You bought a Trident. You are now the king of the ocean!");
                             player.WaterWeapon = true;
                             player.Gold -= 100;
+                            player.WeaponList.Add("Trident");
 
                         }
                         else
@@ -118,15 +121,17 @@ namespace Labb3VG
                         }
                         break;
                     case 6:
-                        if (player.Gold >= 50 && player.HpCurrently > 0)        
+                        if (player.Gold >= 20 && player.HpCurrently > 0)        
                         {
                             Console.WriteLine("You bought a Healt Potion. \"slurp\", \"slurp\",\"slurp\" aaaah, feeling much better already");
                             player.HpCurrently += 100;
+                            
                             if(player.HpCurrently > player.HpBar)
                             { player.HpCurrently = player.HpBar;
                                 Console.WriteLine("Easy tiger, why did you drink so much? Such a waste. Your hp is maximum");
                             }
-                            player.Gold -= 50; 
+                            Console.WriteLine($"{player.HpCurrently}/{player.HpBar} HP");
+                            player.Gold -= 20; 
 
                         }
                         else if(player.HpCurrently <= 0)

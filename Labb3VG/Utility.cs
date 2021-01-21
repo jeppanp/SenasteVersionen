@@ -9,39 +9,55 @@ using Labb3VG.MyMonster;
 
 namespace Labb3VG
 {
-    static class Tools
+    static class Utility
     {
         static Random random = new Random();
         static int nr;
+        static bool hit;
+        
 
-        public static Monster RandomisedMonster()
+        public static Monster PickMonster()
         {
             Monster monster;
             
 
-            if (GameLogic.player.Lvl < 3)
+            if (GameLogic.player.Lvl < 4)
             {
-                monster = GameLogic.monsterList.Find(x => x.Lvl <= 3);
-                GameLogic.monsterList.Remove(monster);
+                monster = RandomMonster(0,4);
             }
             else if (GameLogic.player.Lvl >= 4 && GameLogic.player.Lvl < 7)
             {
-                monster = GameLogic.monsterList.Find(x => x.Lvl >= 3 && x.Lvl <= 7);
-
-                GameLogic.monsterList.Remove(monster);
+                monster = RandomMonster(2, 8);   
             }
-            else 
+            else
             {
-                monster = GameLogic.monsterList.Find(x => x.Lvl >= 7);
-                GameLogic.monsterList.Remove(monster);
+                monster = RandomMonster(4, 11);
             }
 
 
             return monster;
         }
+
+        private static Monster RandomMonster(int x, int y)
+        {
+            List<Monster> TemporaryMonsterList = new List<Monster>();
+
+            foreach (var elemet in GameLogic.monsterList)
+            {
+                if (elemet.Lvl > x && elemet.Lvl < y )
+                {
+                    TemporaryMonsterList.Add(elemet);
+                }
+            }
+
+            nr = random.Next(TemporaryMonsterList.Count);
+
+            return TemporaryMonsterList[nr];
+        }
+
         public static int FindingMonster()
         {
-            nr = random.Next(101);
+            nr = random.Next(1,101);
             if (nr >= 15)               //85 procent to run into a monster
             {
                 return 1;
@@ -73,23 +89,43 @@ namespace Labb3VG
 
         public static int Number1To10()
         {
-            nr = random.Next(1, 11);
 
-            return nr;
+
+            return nr = random.Next(1, 11);
         }
-
-        public static int AttackOrMiss()     // 10 procent to miss the attack for monsters
+        public static int Number1To100()
         {
 
-            if (Number1To10() != 1)
+
+            return nr = random.Next(1, 101);
+        }
+
+        public static bool AttackOrMissMonster()     // 10 procent to miss the attack for monsters
+        {
+
+            if (Number1To100() > 10)
             {
-                nr = 1;
+                hit = true;
             }
             else
             {
-                nr = 2;
+                hit = false;
             }
-            return nr;
+            return hit;
+        }
+
+        public static bool AttackOrMissPlayer()     // 5 procent to miss the attack for player
+        {
+
+            if (Number1To100() > 5)
+            {
+                hit = true;
+            }
+            else
+            {
+                hit = false;
+            }
+            return hit;
         }
 
         public static int StrenghtInAttack(int strengtMonster)
@@ -98,7 +134,7 @@ namespace Labb3VG
 
             if (strengtMonster > 5)
             {
-                nr = random.Next(1, 7);
+                nr = random.Next(4, 7);
             }
 
             return nr + strengtMonster;

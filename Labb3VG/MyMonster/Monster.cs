@@ -45,7 +45,24 @@ namespace Labb3VG.MyMonster
             return "Name: "+ Name +  "\nHP: " + HP + "\nLvl: " + Lvl + "\nRace: " + Race; ;
         }
 
-        abstract public int Attack();
+        virtual public int Attack()
+        {
+            int attack = Utility.StrenghtInAttack(Damage);
+
+            if (Utility.AttackOrMissMonster())
+            {
+
+                Console.WriteLine($"{Name} hits you with a {AttackNames[Utility.AttackNames()]} dealing {attack} damage.");
+            }
+            else
+            {
+                attack = 0;
+                Console.WriteLine($"Wow! That {AttackNames[Utility.AttackNames()]} just passed your head, didn´t get hurt.");
+            }
+
+
+            return attack;
+        }
     
             
 

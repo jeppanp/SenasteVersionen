@@ -23,10 +23,14 @@ namespace Labb3VG
         private bool fireWeapon;
         private bool grassWeapon;
         private bool waterWeapon;
+        private string weapon1;
+        private string weapon2;
+        private string weapon3;
         private bool defAmulet;
         private bool atkAmulet;
         private bool dead;
-
+        private int healedByDruid;
+        private List<string> weaponList = new List<string>();
 
         public Random rnd = new Random();
 
@@ -36,12 +40,13 @@ namespace Labb3VG
         {
             lvl = 1;
             gold = 0;
-            HpBar = 300;
+            HpBar = 350;
             hpCurrently = HpBar;
             lvlBar = 100;
             experience = 0;
             Strength = lvl;
             Toughness = 0;
+            healedByDruid = 1;
 
         }
 
@@ -63,6 +68,11 @@ namespace Labb3VG
         public bool DefAmulet { get => defAmulet; set => defAmulet = value; }
         public bool AtkAmulet { get => atkAmulet; set => atkAmulet = value; }
         public bool Dead { get => dead; set => dead = value; }
+        public string Weapon1 { get => weapon1; set => weapon1 = value; }
+        public string Weapon2{ get => weapon2; set => weapon2 = value; }
+        public string Weapon3 { get => weapon3; set => weapon3 = value; }
+        public List<string> WeaponList { get => weaponList; set => weaponList = value; }
+        public int HealedByDruid { get => healedByDruid; set => healedByDruid = value; }
 
         public void BattleStatus()
         {
@@ -70,17 +80,25 @@ namespace Labb3VG
         }
         public void TakeDamage(int damage)
         {
-           if(defAmulet)
-            { damage -= 2; }
+            
+             damage -= toughness; 
+            
+            if(damage<0)
+            { damage = 0;
+                Console.WriteLine("But your armor reduced all the damage to 0");
+            }
+
 
             hpCurrently -= damage;
 
         }
-        public int Attack(Monster monster)
+
+
+        public int Attack()
         {
             int attack = 0;
 
-            if (monster.Element == "water" && grassWeapon || monster.Element == "fire" && waterWeapon || monster.Element == "grass" && fireWeapon)
+            if (GameLogic.monster.Element == "water" && grassWeapon || GameLogic.monster.Element == "fire" && waterWeapon || GameLogic.monster.Element == "grass" && fireWeapon)
             {
                 attack = Strikes(8);
             }
@@ -93,92 +111,81 @@ namespace Labb3VG
             return attack;
         }
 
+
+
+
         private int Strikes(int weapon)
         {
 
-            int attack = 0;
+            int attack = Utility.StrenghtInAttack(Strength) + weapon;
 
 
-            int nr = rnd.Next(1, 22);                      // Låg risk att missa attacken, 5 procent. 
-            if (nr != 1)
+            if (Utility.AttackOrMissPlayer())
             {
-                nr = rnd.Next(1, 4);
+
+                Console.WriteLine($"You hit the monster, dealing {attack} damage");
             }
             else
             {
-                nr = 4;
-            }
-
-
-
-            switch (nr)
-            {
-                case 1:
-
-                    attack += Strength + weapon;
-                    Console.WriteLine($"You hit the monster, dealing {attack} damage");
-                    break;
-
-                case 2:
-                    attack += Strength + 2 + weapon;
-                    Console.WriteLine($"You hit the monster, dealing {attack} damage");
-                    break;
-
-                case 3:
-                    attack += Strength + 3 + weapon;
-                    Console.WriteLine($"You hit the monster with Great strengt. dealing {attack} damage");
-                    break;
-
-                case 4:
-                    attack = 0;
-                    Console.WriteLine("what happen´ bro? Get your shit together cause you just missed an open hit. Dealing 0 damage");
-                    break;
+                attack = 0;
+                Console.WriteLine("what happen´ bro? Get your shit together cause you just missed an open hit. Dealing 0 damage");
             }
 
             return attack;
         }
+        public void IsDead()
+        {
+            hpCurrently = 0;
+            Dead = true;
+            Gold = (int)Math.Round(Gold * 0.5);          // Drops half of the gold, and lose some abilities. 
+            Strength--;
+            Toughness--;
 
-        public void LvlUp()
+            Console.WriteLine($"You were killed by the monster and dropped {Gold} gold :(");
+            Console.WriteLine("[Press enter to go back to menu]");
+            Console.ReadKey();
+        }
+        public bool LvlUp()
         {
 
             Lvl++;
             Experience = Experience - (int)LvlBar;
-            LvlBar = Math.Round(LvlBar * 1.25);
+            LvlBar = Math.Round(LvlBar * 1.5);
             HpBar = Math.Round(HpBar * 1.15);
             Strength++;
+            if(lvl % 2 == 0)            // Every second lvl tougness increases
+            { toughness++; }
 
             hpCurrently = HpBar;
             if (Lvl < 10)
             {
                 Console.WriteLine($"Congratulations! You leveled up! \nYou are now level {Lvl}, and you have {Experience} experience and {HpCurrently} hp and {gold} gold");
+                return  true;
             }
             else
             {
                 Console.WriteLine("Amazing! You reached lvl 10 and killed all the monsters on Hisingen.  AbuHassan can now relax and focus on his buisness again. ");
-                lvl = 1;
-                gold = 0;
-                HpBar = 300;
-                hpCurrently = HpBar;
-                lvlBar = 100;
-                experience = 0;
-                Strength = lvl;
-                Toughness = 0;
-                AtkAmulet = false;
-                DefAmulet = false;
-                FireWeapon = false;
-                WaterWeapon = false;
-                GrassWeapon = false;
-                Console.WriteLine("[Press enter to restart the game]");
-                Console.ReadKey();
-                GameLogic.Start();
+                return false;
+
             }
 
         }
 
         public override string ToString()
         {
-            return $"***********\n* Name: {Name}\n* Level: {Lvl}\n* HP: {HpCurrently}/{HpBar}\n* Exp: {Experience}/{LvlBar}\n* Gold: {Gold}\n* Strength: {Strength}\n* Toughness: {Toughness}\n***********";
-        } // Lägg till om personen har en amulett eller svärd. 
+            string status = null;
+            if (fireWeapon)
+            { weapon1 = "FireSword,"; }
+            if (waterWeapon)
+            { weapon2 = "Trident,"; }
+            if (grassWeapon)
+            { weapon3 = "Electric Rod"; }
+            if(dead)
+            { status = ", you are dead."; }
+
+
+            return $"***********\n* Name: {Name} {status}\n* Level: {Lvl}\n* HP: {HpCurrently}/{HpBar}\n* Exp: {Experience}/{LvlBar}\n* Gold: {Gold}\n* Strength: {Strength}\n* Toughness: {Toughness}\n* Weapon: {weapon1}{weapon2}{weapon3}\n***********";
+        } 
     }
 
 
