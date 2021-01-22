@@ -32,8 +32,6 @@ namespace Labb3VG
             Console.Write("Enter your namne: ");
             player.Name = Console.ReadLine();
 
-
-
             if (player.Name.Trim().ToLower() == "robin")
             { RobinMode(); }
 
@@ -44,13 +42,13 @@ namespace Labb3VG
         {
             while (keepGoing)
             {
-
+                Console.Clear();
 
                 Console.WriteLine("1. Go adventuring");
                 Console.WriteLine("2. Show details about your character");
                 Console.WriteLine("3. Shop");
                 Console.WriteLine("4. Exit Game");
-                if (player.Dead && player.HealedByDruid == 1)
+                if (player.Dead && player.HealedByDruid == 1)                   // This option only appears when your dead, and can only be used once. 
                 { Console.WriteLine("5. Go and search for the druid"); }
                 Console.Write(">");
 
@@ -78,10 +76,9 @@ namespace Labb3VG
                         break;
 
                     case 5:
-                        if (player.Dead && player.HealedByDruid == 1)
-                        {
-                            GoFindDruid();
-                        }
+                        if (player.Dead && player.HealedByDruid == 1)      // If someone tries to use this while alive they get back to menu.
+                        { GoFindDruid(); }
+
                         Menu();
                         break;
 
@@ -112,8 +109,8 @@ namespace Labb3VG
                     break;
 
                 case 2:
-                    Console.WriteLine("Druid: heheh, I see. But the amount of stamina to manage such thing is only one creatue that holds.\n Its the Devil himself.");
-                    Console.WriteLine("Druid: If you decide to go back to life, you endanger the life of all the people at Hisingen. \nThe Devils power will increase by doing this. Are you still up for that risk?  ");
+                    Console.WriteLine("Druid: heheh, I see. But the amount of stamina to manage such thing is only one creatue that holds.\n    Its the Devil himself.");
+                    Console.WriteLine("Druid: If you decide to go back to life, you endanger the life of all the people at Hisingen.\n     The Devils power will increase by doing this. Are you still up for that risk?  ");
                     Console.ReadKey();
 
                     Console.WriteLine("\n1. Yes, I need go back to save Abu Hassans Business");
@@ -123,13 +120,13 @@ namespace Labb3VG
                     {
                         case 1:
                             Monster devil = monsterList.Find(x => x.Race == "Devil" && x.Lvl > 6);
-                            devil.HP *= 10;
+                            devil.Hp *= 10;
                             devil.Damage *= 4;
                             devil.DropGold += player.Gold;
                             player.Gold = 0;
-                            player.HpCurrently = (int)player.HpBar * 0.5;
+                            player.HpCurrently = (int)player.HpMax * 0.5;   // only get half of the HP reset. 
                             player.Dead = false;
-                            player.HealedByDruid--;
+                            player.HealedByDruid--;                      // it´s only possible to get healed once. 
                             Console.WriteLine("\nDruid: if that is what you really want.. Get ready then, I´ll summon his power and trough him bring your life back");
                             Console.ReadKey();
                             Console.WriteLine("Druid: And its done. Oh, Now I need to rest, and now everything depends on you.");
@@ -155,7 +152,7 @@ namespace Labb3VG
         private static void RobinMode()
         {
             player.Gold = 1000000;
-            player.HpBar = 10000;
+            player.HpMax = 10000;
             player.HpCurrently = 10000;
 
             player.Strength = 20;
@@ -167,7 +164,7 @@ namespace Labb3VG
         {
             if (IsPlayerAlive())
             {
-                switch (Utility.FindingMonster())
+                switch (Utility.Adventurering())
 
                 {
                     case 1:
@@ -191,7 +188,7 @@ namespace Labb3VG
 
         private static void Battle()
         {
-            monster = Utility.PickMonster();  // Slumpa fram lvlbaserat
+            monster = Utility.PickMonster();  
             monster.Greetings();
 
             while (!player.Dead && !monster.Dead)
@@ -199,7 +196,7 @@ namespace Labb3VG
 
                 damage = player.Attack();
                 monster.TakeDamage(damage);
-                if (monster.HP <= 0)
+                if (monster.Hp <= 0)
                 {
                     monster.Dead = true;
                     Loot(monster);
@@ -212,7 +209,7 @@ namespace Labb3VG
                     { player.TakeDamage(damage); }
                 }
 
-                if (player.HpCurrently <= 0)           // bestämm om de ska ske något när en dör. tappa guld? avbryta spelet? healing möjlighet? 
+                if (player.HpCurrently <= 0)           
                 {
                     player.IsDead();
                 }
@@ -222,7 +219,7 @@ namespace Labb3VG
                     player.BattleStatus();
                     monster.BattleStatus();
 
-                    Console.WriteLine("[press enter to contiunue]");
+                    Console.WriteLine("\n[press enter to contiunue]\n");
                     Console.ReadKey();
                 }
 
@@ -232,17 +229,17 @@ namespace Labb3VG
 
         private static void Loot(Monster monster)
         {
-            Console.WriteLine($"You killed the monster! Gaining {monster.Experience} experience and looted {monster.DropGold} gold");
+            Console.WriteLine($"\nYou killed the monster! Gaining {monster.Experience} experience and looted {monster.DropGold} gold");
 
             player.Gold += monster.DropGold;
             player.Experience += monster.Experience;
 
             if (player.Experience >= player.LvlBar)
             {
-                keepGoing = player.LvlUp();                   // If player is reach lvl 10 the loop for the game ends, and so does the game. 
+                keepGoing = player.LvlUp();                   // If player reach lvl 10 the loop for the game ends, and so does the game. 
             }
 
-            Console.WriteLine("[Press enter to go back to menu]");
+            Console.WriteLine("\n[Press enter to go back to menu]");
             Console.ReadKey();
 
         }
@@ -266,7 +263,7 @@ namespace Labb3VG
             Console.WriteLine(player);
             Console.WriteLine("[Press enter to go back to menu]");
             Console.ReadKey();
-            Console.Clear();
+           
         }
 
         private static void CreateMonsters()   // Just because i want random kind of monsters, in different lvls i go through this loop. And the settings gives them random lvls and names. 

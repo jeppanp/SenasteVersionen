@@ -14,7 +14,7 @@ namespace Labb3VG.MyMonster.Fire
             this.Race = "Dragon Lord";
             this.Sound = " He Yells FCHHHHHHHH, YOU WILL BUUUUURN";
             this.Lvl = 10;
-            this.HP = 600;
+            this.Hp = 600;
             this.DropGold = 240;  // Skriv en random drop? 
             this.Experience = 150;
             this.Damage = 40;

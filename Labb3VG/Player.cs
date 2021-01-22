@@ -16,10 +16,9 @@ namespace Labb3VG
         private int experience;
         private int gold;
         private double hpCurrently;
-        private double hpBar;
+        private double hpMax;
         private int toughness;
         private int strength;
-        private bool amulett;
         private bool fireWeapon;
         private bool grassWeapon;
         private bool waterWeapon;
@@ -30,6 +29,7 @@ namespace Labb3VG
         private bool atkAmulet;
         private bool dead;
         private int healedByDruid;
+        private int attack;
         private List<string> weaponList = new List<string>();
 
         public Random rnd = new Random();
@@ -40,8 +40,8 @@ namespace Labb3VG
         {
             lvl = 1;
             gold = 0;
-            HpBar = 350;
-            hpCurrently = HpBar;
+            HpMax = 350;
+            hpCurrently = HpMax;
             lvlBar = 100;
             experience = 0;
             Strength = lvl;
@@ -58,37 +58,25 @@ namespace Labb3VG
         public double HpCurrently { get => hpCurrently; set => hpCurrently = value; }
         public int Toughness { get => toughness; set => toughness = value; }
         public int Strength { get => strength; set => strength = value; }
-        public bool StrengtAmulet { get => amulett; set => amulett = value; }
         public double LvlBar { get => lvlBar; set => lvlBar = value; }
         public int Experience { get => experience; set => experience = value; }
-        public double HpBar { get => hpBar; set => hpBar = value; }
+        public double HpMax { get => hpMax; set => hpMax = value; }
         public bool FireWeapon { get => fireWeapon; set => fireWeapon = value; }
         public bool GrassWeapon { get => grassWeapon; set => grassWeapon = value; }
         public bool WaterWeapon { get => waterWeapon; set => waterWeapon = value; }
         public bool DefAmulet { get => defAmulet; set => defAmulet = value; }
         public bool AtkAmulet { get => atkAmulet; set => atkAmulet = value; }
         public bool Dead { get => dead; set => dead = value; }
-        public string Weapon1 { get => weapon1; set => weapon1 = value; }
-        public string Weapon2{ get => weapon2; set => weapon2 = value; }
-        public string Weapon3 { get => weapon3; set => weapon3 = value; }
         public List<string> WeaponList { get => weaponList; set => weaponList = value; }
         public int HealedByDruid { get => healedByDruid; set => healedByDruid = value; }
 
         public void BattleStatus()
         {
-            Console.WriteLine($"{Name}: {hpCurrently}");
+            Console.WriteLine($"{Name}: {hpCurrently} hp");
         }
         public void TakeDamage(int damage)
         {
-            
-             damage -= toughness; 
-            
-            if(damage<0)
-            { damage = 0;
-                Console.WriteLine("But your armor reduced all the damage to 0");
-            }
-
-
+           
             hpCurrently -= damage;
 
         }
@@ -96,9 +84,9 @@ namespace Labb3VG
 
         public int Attack()
         {
-            int attack = 0;
+            attack = 0;                                  // kind of an ugly way to manage different weapons abilities to different monsters. 
 
-            if (GameLogic.monster.Element == "water" && grassWeapon || GameLogic.monster.Element == "fire" && waterWeapon || GameLogic.monster.Element == "grass" && fireWeapon)
+            if (GameLogic.monster.Element == "water" && grassWeapon || GameLogic.monster.Element == "fire" && waterWeapon || GameLogic.monster.Element == "grass" && fireWeapon)   
             {
                 attack = Strikes(8);
             }
@@ -117,7 +105,7 @@ namespace Labb3VG
         private int Strikes(int weapon)
         {
 
-            int attack = Utility.StrenghtInAttack(Strength) + weapon;
+            attack = Utility.StrenghtInAttack(Strength) + weapon;
 
 
             if (Utility.AttackOrMissPlayer())
@@ -137,11 +125,13 @@ namespace Labb3VG
         {
             hpCurrently = 0;
             Dead = true;
-            Gold = (int)Math.Round(Gold * 0.5);          // Drops half of the gold, and lose some abilities. 
+            Gold = (int)Math.Round(Gold * 0.5);          // Drops half of the gold, and loses some abilities. 
             Strength--;
             Toughness--;
+            if(toughness<0) toughness = 0;
+           
 
-            Console.WriteLine($"You were killed by the monster and dropped {Gold} gold :(");
+            Console.WriteLine($"\nYou were killed by the monster and dropped {Gold} gold :(");
             Console.WriteLine("[Press enter to go back to menu]");
             Console.ReadKey();
         }
@@ -151,20 +141,20 @@ namespace Labb3VG
             Lvl++;
             Experience = Experience - (int)LvlBar;
             LvlBar = Math.Round(LvlBar * 1.5);
-            HpBar = Math.Round(HpBar * 1.15);
+            HpMax = Math.Round(HpMax * 1.15);
             Strength++;
             if(lvl % 2 == 0)            // Every second lvl tougness increases
             { toughness++; }
 
-            hpCurrently = HpBar;
+            hpCurrently = HpMax;
             if (Lvl < 10)
             {
-                Console.WriteLine($"Congratulations! You leveled up! \nYou are now level {Lvl}, and you have {Experience} experience and {HpCurrently} hp and {gold} gold");
+                Console.WriteLine($"\nCongratulations! You leveled up! \nYou are now level {Lvl}, and you have {Experience} experience and {HpCurrently} hp and {gold} gold");
                 return  true;
             }
             else
             {
-                Console.WriteLine("Amazing! You reached lvl 10 and killed all the monsters on Hisingen.  AbuHassan can now relax and focus on his buisness again. ");
+                Console.WriteLine("\nAmazing! You reached lvl 10 and killed all the monsters on Hisingen.\nAbuHassan can now relax and focus on his buisness again. ");
                 return false;
 
             }
@@ -184,7 +174,7 @@ namespace Labb3VG
             { status = ", you are dead."; }
 
 
-            return $"***********\n* Name: {Name} {status}\n* Level: {Lvl}\n* HP: {HpCurrently}/{HpBar}\n* Exp: {Experience}/{LvlBar}\n* Gold: {Gold}\n* Strength: {Strength}\n* Toughness: {Toughness}\n* Weapon: {weapon1}{weapon2}{weapon3}\n***********";
+            return $"***********\n* Name: {Name} {status}\n* Level: {Lvl}\n* HP: {HpCurrently}/{HpMax}\n* Exp: {Experience}/{LvlBar}\n* Gold: {Gold}\n* Strength: {Strength}\n* Toughness: {Toughness}\n* Weapon: {weapon1}{weapon2}{weapon3}\n***********";
         } 
     }
 

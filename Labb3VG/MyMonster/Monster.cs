@@ -9,7 +9,7 @@ namespace Labb3VG.MyMonster
     {
         public string Name { get; set; }
 
-        public int HP { get; set; }
+        public int Hp { get; set; }
 
         public int DropGold { get; set; }
 
@@ -28,26 +28,28 @@ namespace Labb3VG.MyMonster
 
         virtual public void Greetings()
         {
-            Console.WriteLine($" Ooohh. You run into {Name}, a {Race} (lvl {Lvl}).{Sound}");
+            Console.WriteLine($"\nOoohh. You run into {Name}, a {Race} (lvl {Lvl}).{Sound}\n");
         }
 
         virtual public void TakeDamage(int damage)
         {
-            HP -= damage;
+            Hp -= damage;
         }
         virtual public void BattleStatus()
         {
-            Console.WriteLine($"{Name}: {HP}");
+            Console.WriteLine($"{Name}: {Hp} hp");
         }
 
         public override string ToString()
         {
-            return "Name: "+ Name +  "\nHP: " + HP + "\nLvl: " + Lvl + "\nRace: " + Race; ;
+            return "Name: "+ Name +  "\nHP: " + Hp + "\nLvl: " + Lvl + "\nRace: " + Race; ;
         }
 
-        virtual public int Attack()
+        virtual public int Attack()                                                    // Made one overall attack-Method. But the attacknames and damage are still uniqe for each monster. 
         {
             int attack = Utility.StrenghtInAttack(Damage);
+            attack -= GameLogic.player.Toughness;
+            if (attack < 0) attack = 0;
 
             if (Utility.AttackOrMissMonster())
             {

@@ -15,7 +15,7 @@ namespace Labb3VG.MyMonster.Fire
             this.Race = "Devil";
             this.Sound = "He Yells: \"Your soul will be mine!\"";
             this.Lvl = Utility.RandomLvl();
-            this.HP = 50 + (Lvl * 4);
+            this.Hp = 50 + (Lvl * 4);
             this.DropGold = 40 + (Lvl * 3);  // Skriv en random drop? 
             this.Experience = 50 + (Lvl * 2);
             this.Damage = (Lvl * 2);

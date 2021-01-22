@@ -16,7 +16,7 @@ namespace Labb3VG.MyMonster.Grass
             this.Race = "Rabies Bear";
             this.Sound = "He moans like \"Grooar\"... *drooling* *drooling*";
             this.Lvl = Utility.RandomLvl();
-            this.HP = 70 + (Lvl * 5);
+            this.Hp = 70 + (Lvl * 5);
             this.DropGold = 30 + (Lvl * 3);  // Skriv en random drop? 
             this.Experience = 50 + (Lvl * 7);
             this.Damage = (Lvl * 2);

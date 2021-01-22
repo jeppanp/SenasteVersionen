@@ -14,7 +14,7 @@ namespace Labb3VG.MyMonster.Water
         this.Race = "Tortoise";
         this.Sound = "You can hear the sound of \"Bluuuuub Bluuuuub\"";
         this.Lvl = Utility.RandomLvl();
-        this.HP = 50 + (Lvl * 4);
+        this.Hp = 50 + (Lvl * 4);
         this.DropGold = 10 + (Lvl * 2);  // Skriv en random drop? 
         this.Experience = 60 + (Lvl * 2);
         this.Damage = (int)Math.Round(Lvl * 1.5);

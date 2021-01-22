@@ -17,7 +17,7 @@ namespace Labb3VG.MyMonster.Fire
             this.Race = "Dragon";
             this.Sound = "You hear the sound of FCHHHHHHHH";
             this.Lvl = Utility.RandomLvl();
-            this.HP = 80 + (Lvl * 4);
+            this.Hp = 80 + (Lvl * 4);
             this.DropGold = 40 + (Lvl * 5);  // Skriv en random drop? 
             this.Experience = 80 + (Lvl * 2);
             this.Damage = (int)Math.Round(Lvl * 2.5);

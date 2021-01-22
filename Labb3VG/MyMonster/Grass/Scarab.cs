@@ -15,7 +15,7 @@ namespace Labb3VG.MyMonster.Grass
             this.Race = "Scarab";
             this.Sound = "You hear the sound of his movement: tik tik tik tik";
             this.Lvl = Utility.RandomLvl();
-            this.HP = 50 + (Lvl * 4);
+            this.Hp = 50 + (Lvl * 4);
             this.DropGold = 15 + (Lvl * 3);  // Skriv en random drop? 
             this.Experience = 50 + (Lvl * 2);
             this.Damage = (Lvl + 1);

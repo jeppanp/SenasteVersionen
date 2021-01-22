@@ -17,10 +17,10 @@ namespace Labb3VG
             keepGoing = true;
 
 
-                Console.WriteLine($"Welcome {player.Name} to AbuHassans Shop \nWhat would you like to buy?");
+                Console.WriteLine($"\nWelcome {player.Name} to AbuHassans Shop \nWhat would you like to buy?\n");
                 while (keepGoing)
             {
-                Console.WriteLine($"You have {player.Gold} gold to spend.\n******");
+                Console.WriteLine($"You have {player.Gold} gold.\n******");
                 Console.WriteLine("1. Attack Amulet (+  5 strengt) - 150 gold");
                 Console.WriteLine("2. Defense Amulet (+ 2 toughness)- 150 gold");
                 Console.WriteLine("3. Fire Sword ( + 8 power against Grass monster) - 100 gold");    // Alla ändringar här görs i playerklassen. Ex player.strengt + 5. Sen ändra jag i attack med vapen
@@ -36,7 +36,7 @@ namespace Labb3VG
                     case 1:
                         if (player.Gold >= 100 && player.AtkAmulet == false)
                         {
-                            Console.WriteLine("You bought an amulet. You can feel its power.");
+                            Console.WriteLine("You bought an amulet. You can feel its power.\n");
                             player.Strength += 5;
                             player.AtkAmulet = true;
                             player.Gold -= 150;
@@ -44,7 +44,7 @@ namespace Labb3VG
                         }
                         else if (player.AtkAmulet)
                         {
-                            Console.WriteLine("Your idiot, wasting money on something you already got. Suit your self consumption freak ");
+                            Console.WriteLine("Your idiot, wasting money on something you already got. Suit your self consumption freak\n");
                             player.Gold -= 150;
                         }
                         else
@@ -57,7 +57,7 @@ namespace Labb3VG
                     case 2:
                         if (player.Gold >= 150 && player.DefAmulet == false)
                         {
-                            Console.WriteLine("You bought an amulet. You can feel its power.");
+                            Console.WriteLine("You bought an amulet. You can feel its power.\n");
                             player.Toughness += 2;
                             player.DefAmulet = true;
                             player.Gold -= 150;
@@ -66,7 +66,7 @@ namespace Labb3VG
 
                         else if (player.AtkAmulet)
                         {
-                            Console.WriteLine("Your idiot, wasting money on something you already got. Suit your self consumption freak ");
+                            Console.WriteLine("Your idiot, wasting money on something you already got. Suit your self consumption freak\n");
                             player.Gold -= 150;
                         }
                         else
@@ -78,7 +78,7 @@ namespace Labb3VG
                     case 3:
                         if (player.Gold >= 100)
                         {
-                            Console.WriteLine("You bought a Fire Sword. You can hear its sound \"FCCSHHHH\" while you swing it through the air.");
+                            Console.WriteLine("You bought a Fire Sword. You can hear its sound \"FCCSHHHH\" while you swing it through the air.\n");
                             player.FireWeapon = true;
                             player.Gold -= 100;
                             player.WeaponList.Add("Fire Sword");
@@ -93,7 +93,7 @@ namespace Labb3VG
                     case 4:
                         if (player.Gold >= 100)
                         {
-                            Console.WriteLine("You bought an Electric Rod. The flashes surronds it and fire lightnings");
+                            Console.WriteLine("You bought an Electric Rod. The flashes surronds it and fire lightnings\n");
                             player.GrassWeapon = true;
                             player.Gold -= 100;
                             player.WeaponList.Add("Electric Rod");
@@ -108,7 +108,7 @@ namespace Labb3VG
                     case 5:
                         if (player.Gold >= 100)
                         {
-                            Console.WriteLine("You bought a Trident. You are now the king of the ocean!");
+                            Console.WriteLine("You bought a Trident. You are now the king of the ocean!\n");
                             player.WaterWeapon = true;
                             player.Gold -= 100;
                             player.WeaponList.Add("Trident");
@@ -123,14 +123,14 @@ namespace Labb3VG
                     case 6:
                         if (player.Gold >= 20 && player.HpCurrently > 0)        
                         {
-                            Console.WriteLine("You bought a Healt Potion. \"slurp\", \"slurp\",\"slurp\" aaaah, feeling much better already");
+                            Console.WriteLine("You bought a Healt Potion. \"slurp\", \"slurp\",\"slurp\" aaaah, feeling much better already\n");
                             player.HpCurrently += 100;
                             
-                            if(player.HpCurrently > player.HpBar)
-                            { player.HpCurrently = player.HpBar;
+                            if(player.HpCurrently > player.HpMax)
+                            { player.HpCurrently = player.HpMax;
                                 Console.WriteLine("Easy tiger, why did you drink so much? Such a waste. Your hp is maximum");
                             }
-                            Console.WriteLine($"{player.HpCurrently}/{player.HpBar} HP");
+                            Console.WriteLine($"{player.HpCurrently}/{player.HpMax} HP");
                             player.Gold -= 20; 
 
                         }
@@ -138,6 +138,7 @@ namespace Labb3VG
                         {
                             Console.WriteLine("AbuHassan gets a strange feeling and the curtains flutter. It must be a visit from the dead");
                             keepGoing = false;
+                            Console.ReadKey();
                         }
                         else
                         {
@@ -158,7 +159,7 @@ namespace Labb3VG
 
         private static void Hustle()
         {
-            Console.WriteLine("Hey man, are you trying to hustle me? Get out of my shop!");
+            Console.WriteLine("Hey man, are you trying to hustle me? Get out of my shop!\n");
             keepGoing = false;
 
         }

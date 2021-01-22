@@ -20,7 +20,7 @@ namespace Labb3VG
         {
             Monster monster;
             
-
+                                                                            // Depeding on the player lvls, a monster the fit his ranking is selected. First through a sort and then a random pick. 
             if (GameLogic.player.Lvl < 4)
             {
                 monster = RandomMonster(0,4);
@@ -55,7 +55,7 @@ namespace Labb3VG
             return TemporaryMonsterList[nr];
         }
 
-        public static int FindingMonster()
+        public static int Adventurering()
         {
             nr = random.Next(1,101);
             if (nr >= 15)               //85 procent to run into a monster
@@ -128,16 +128,16 @@ namespace Labb3VG
             return hit;
         }
 
-        public static int StrenghtInAttack(int strengtMonster)
+        public static int StrenghtInAttack(int strenght)
         {
             nr = random.Next(1, 3);
 
-            if (strengtMonster > 5)
+            if (strenght > 5)
             {
                 nr = random.Next(4, 7);
             }
 
-            return nr + strengtMonster;
+            return nr + strenght;
         }
 
     }

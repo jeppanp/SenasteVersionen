@@ -6,10 +6,10 @@ using Labb3VG.MyMonster;
 
 namespace Labb3VG
 {
-    interface IMonster
+    interface IMonster              // Note to Mr eller Mrs rättare; Jaaaa, jag vet, fett onödigt att ha med interface när allt löses i abstrakta klassen Monster. Men jag behövde träna. 
     {
         public string Name { get; }
-        public int HP { get; set; }
+        public int Hp { get; set; }
         public int DropGold { get; set; }
         public int Experience { get; set; }
         public int Lvl { get; set; }
